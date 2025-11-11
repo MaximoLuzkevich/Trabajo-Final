@@ -47,7 +47,7 @@ public class GestorAdministrador implements Gestor<Administrador> {
 
     public void eliminar(int id) {
         Administrador a = buscarPorId(id);
-        administradores.remove(a);
+        a.setActivo(false);
         guardarEnArchivo();
     }
 
@@ -67,6 +67,7 @@ public class GestorAdministrador implements Gestor<Administrador> {
             obj.put("email", a.getEmail());
             obj.put("contrasena", a.getContrasena());
             obj.put("legajo", a.getLegajo());
+            obj.put("activo", a.isActivo());
             array.put(obj);
         }
         OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
@@ -77,7 +78,6 @@ public class GestorAdministrador implements Gestor<Administrador> {
         if (!f.exists()) return;
         JSONTokener tokener = OperacionesLectoEscritura.leer(ARCHIVO_JSON);
         if (tokener == null) return;
-
         JSONArray array = new JSONArray(tokener);
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
@@ -91,6 +91,7 @@ public class GestorAdministrador implements Gestor<Administrador> {
                     obj.getString("contrasena"),
                     obj.getInt("legajo")
             );
+            a.setActivo(obj.optBoolean("activo", true));
             administradores.add(a);
         }
     }

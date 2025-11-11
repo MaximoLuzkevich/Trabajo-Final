@@ -49,7 +49,7 @@ public class GestorConsulta implements Gestor<Consulta> {
     public void eliminar(int id) {
         Consulta c = buscarPorId(id);
         if (c != null) {
-            consultas.remove(c);
+            c.setActivo(false);
             guardarEnArchivo();
         }
     }
@@ -66,6 +66,7 @@ public class GestorConsulta implements Gestor<Consulta> {
             obj.put("idTurno", c.getTurno().getId());
             obj.put("diagnostico", c.getDiagnostico());
             obj.put("observaciones", c.getObservaciones());
+            obj.put("activo", c.isActivo());
             array.put(obj);
         }
         OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
@@ -79,19 +80,18 @@ public class GestorConsulta implements Gestor<Consulta> {
         JSONArray array = new JSONArray(tokener);
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
-            int id = obj.getInt("id");
             int idTurno = obj.getInt("idTurno");
             Turno turno = gestorTurno.buscarPorId(idTurno);
             if (turno != null) {
                 Consulta c = new Consulta(
-                        id,
+                        obj.getInt("id"),
                         turno,
                         obj.optString("diagnostico", ""),
                         obj.optString("observaciones", "")
                 );
+                c.setActivo(obj.optBoolean("activo", true));
                 consultas.add(c);
             }
         }
     }
 }
-

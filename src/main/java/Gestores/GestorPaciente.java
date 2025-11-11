@@ -1,16 +1,16 @@
 package Gestores;
 
-import Clases_Java.Paciente;
 import Clases_Java.OperacionesLectoEscritura;
+import Clases_Java.Paciente;
 import Excepciones.UsuarioNoEncontradoException;
 import Interfaz.Gestor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
 
 public class GestorPaciente implements Gestor<Paciente> {
 
@@ -47,7 +47,7 @@ public class GestorPaciente implements Gestor<Paciente> {
 
     public void eliminar(int id) {
         Paciente p = buscarPorId(id);
-        pacientes.remove(p);
+        p.setActivo(false);
         guardarEnArchivo();
     }
 
@@ -67,6 +67,7 @@ public class GestorPaciente implements Gestor<Paciente> {
             obj.put("email", p.getEmail());
             obj.put("contrasena", p.getContrasena());
             obj.put("obraSocial", p.getObraSocial());
+            obj.put("activo", p.isActivo());
             array.put(obj);
         }
         OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
@@ -90,6 +91,7 @@ public class GestorPaciente implements Gestor<Paciente> {
                     obj.getString("contrasena"),
                     obj.getString("obraSocial")
             );
+            p.setActivo(obj.optBoolean("activo", true));
             pacientes.add(p);
         }
     }

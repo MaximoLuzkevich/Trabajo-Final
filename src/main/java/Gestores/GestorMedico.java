@@ -47,7 +47,7 @@ public class GestorMedico implements Gestor<Medico> {
 
     public void eliminar(int id) {
         Medico m = buscarPorId(id);
-        medicos.remove(m);
+        m.setActivo(false);
         guardarEnArchivo();
     }
 
@@ -68,6 +68,7 @@ public class GestorMedico implements Gestor<Medico> {
             obj.put("contrasena", m.getContrasena());
             obj.put("especialidad", m.getEspecialidad());
             obj.put("matricula", m.getMatricula());
+            obj.put("activo", m.isActivo());
             array.put(obj);
         }
         OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
@@ -92,6 +93,7 @@ public class GestorMedico implements Gestor<Medico> {
                     obj.getString("especialidad"),
                     obj.getString("matricula")
             );
+            m.setActivo(obj.optBoolean("activo", true));
             medicos.add(m);
         }
     }

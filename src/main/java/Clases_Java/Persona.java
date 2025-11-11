@@ -1,7 +1,7 @@
 package Clases_Java;
 
-import java.util.Objects;
 import Enums.TipoUsuario;
+import java.util.Objects;
 
 public abstract class Persona {
     protected int id;
@@ -11,7 +11,8 @@ public abstract class Persona {
     protected int telefono;
     protected String email;
     protected String contrasena;
-    protected TipoUsuario tipoUsuario; // agregado
+    protected TipoUsuario tipoUsuario;
+    protected boolean activo;
 
     public Persona(int id, String nombre, String apellido, int dni, int telefono,
                    String email, String contrasena, TipoUsuario tipoUsuario) {
@@ -23,6 +24,7 @@ public abstract class Persona {
         this.email = email;
         this.contrasena = contrasena;
         this.tipoUsuario = tipoUsuario;
+        this.activo = true;
     }
 
     public int getId() { return id; }
@@ -49,16 +51,8 @@ public abstract class Persona {
     public TipoUsuario getTipoUsuario() { return tipoUsuario; }
     public void setTipoUsuario(TipoUsuario tipoUsuario) { this.tipoUsuario = tipoUsuario; }
 
-    @Override
-    public String toString() {
-        return "ID: " + id +
-                ", Nombre: " + nombre +
-                ", Apellido: " + apellido +
-                ", DNI: " + dni +
-                ", Teléfono: " + telefono +
-                ", Email: " + email +
-                ", Tipo: " + tipoUsuario;
-    }
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
 
     @Override
     public boolean equals(Object o) {
@@ -71,5 +65,15 @@ public abstract class Persona {
     @Override
     public int hashCode() {
         return Objects.hash(dni);
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id +
+                ", Nombre: " + nombre + " " + apellido +
+                ", DNI: " + dni +
+                ", Teléfono: " + telefono +
+                ", Email: " + email +
+                ", Activo: " + activo;
     }
 }

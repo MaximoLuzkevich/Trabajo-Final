@@ -50,7 +50,7 @@ public class GestorFacturacion implements Gestor<Facturacion> {
     public void eliminar(int id) {
         Facturacion f = buscarPorId(id);
         if (f != null) {
-            facturaciones.remove(f);
+            f.setActivo(false);
             guardarEnArchivo();
         }
     }
@@ -68,6 +68,7 @@ public class GestorFacturacion implements Gestor<Facturacion> {
             obj.put("monto", f.getMonto());
             obj.put("metodoPago", f.getMetodoPago().name());
             obj.put("pagado", f.isPagado());
+            obj.put("activo", f.isActivo());
             array.put(obj);
         }
         OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
@@ -78,20 +79,21 @@ public class GestorFacturacion implements Gestor<Facturacion> {
         if (!f.exists()) return;
         JSONTokener tokener = OperacionesLectoEscritura.leer(ARCHIVO_JSON);
         if (tokener == null) return;
-
         JSONArray array = new JSONArray(tokener);
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
 
-            int id = obj.getInt("id");
             int idConsulta = obj.getInt("idConsulta");
-            double monto = obj.getDouble("monto");
-            MetodoPago metodo = MetodoPago.valueOf(obj.getString("metodoPago"));
-            boolean pagado = obj.getBoolean("pagado");
-
             Consulta consulta = gestorConsulta.buscarPorId(idConsulta);
             if (consulta != null) {
-                Facturacion fact = new Facturacion(id, consulta, monto, metodo, pagado);
+                Facturacion fact = new Facturacion(
+                        obj.getInt("id"),
+                        consulta,
+                        obj.getDouble("monto"),
+                        MetodoPago.valueOf(obj.getString("metodoPago")),
+                        obj.getBoolean("pagado")
+                );
+                fact.setActivo(obj.optBoolean("activo", true));
                 facturaciones.add(fact);
             }
         }

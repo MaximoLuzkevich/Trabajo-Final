@@ -3,6 +3,7 @@ package Clases_Java;
 import Enums.TipoUsuario;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Medico extends Persona {
     private String especialidad;
@@ -17,7 +18,6 @@ public class Medico extends Persona {
         this.agenda = new ArrayList<>();
     }
 
-    // Getters y Setters
     public String getEspecialidad() {
         return especialidad;
     }
@@ -42,7 +42,6 @@ public class Medico extends Persona {
         this.agenda = agenda;
     }
 
-    // Métodos específicos
     public void agregarTurnoALaAgenda(Turno turno) {
         if (turno != null) {
             agenda.add(turno);
@@ -66,5 +65,18 @@ public class Medico extends Persona {
                 ", Especialidad: " + especialidad +
                 ", Matrícula: " + matricula +
                 ", Turnos en agenda: " + agenda.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Medico)) return false;
+        Medico m = (Medico) o;
+        return this.getId() == m.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

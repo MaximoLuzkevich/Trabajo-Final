@@ -47,7 +47,7 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
 
     public void eliminar(int id) {
         Recepcionista r = buscarPorId(id);
-        recepcionistas.remove(r);
+        r.setActivo(false);
         guardarEnArchivo();
     }
 
@@ -67,6 +67,7 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
             obj.put("email", r.getEmail());
             obj.put("contrasena", r.getContrasena());
             obj.put("legajo", r.getLegajo());
+            obj.put("activo", r.isActivo());
             array.put(obj);
         }
         OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
@@ -77,7 +78,6 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
         if (!f.exists()) return;
         JSONTokener tokener = OperacionesLectoEscritura.leer(ARCHIVO_JSON);
         if (tokener == null) return;
-
         JSONArray array = new JSONArray(tokener);
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
@@ -91,6 +91,7 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
                     obj.getString("contrasena"),
                     obj.getInt("legajo")
             );
+            r.setActivo(obj.optBoolean("activo", true));
             recepcionistas.add(r);
         }
     }

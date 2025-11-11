@@ -1,7 +1,6 @@
 package Clases_Java;
 
 import Enums.MetodoPago;
-
 import java.util.Objects;
 
 public class Facturacion {
@@ -10,6 +9,7 @@ public class Facturacion {
     private double monto;
     private MetodoPago metodoPago;
     private boolean pagado;
+    private boolean activo;
 
     public Facturacion(int id, Consulta consulta, double monto, MetodoPago metodoPago, boolean pagado) {
         this.id = id;
@@ -17,6 +17,7 @@ public class Facturacion {
         this.monto = monto;
         this.metodoPago = metodoPago;
         this.pagado = pagado;
+        this.activo = true;
     }
 
     public int getId() { return id; }
@@ -34,13 +35,17 @@ public class Facturacion {
     public boolean isPagado() { return pagado; }
     public void setPagado(boolean pagado) { this.pagado = pagado; }
 
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
+
     @Override
     public String toString() {
         return "Factura ID: " + id +
                 ", Consulta: " + consulta.getId() +
                 ", Monto: $" + monto +
                 ", Método de pago: " + metodoPago +
-                ", Pagado: " + pagado;
+                ", Pagado: " + pagado +
+                ", Activo: " + activo;
     }
 
     @Override

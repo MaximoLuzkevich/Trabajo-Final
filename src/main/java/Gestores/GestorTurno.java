@@ -1,9 +1,9 @@
 package Gestores;
 
 import Clases_Java.Medico;
+import Clases_Java.OperacionesLectoEscritura;
 import Clases_Java.Paciente;
 import Clases_Java.Turno;
-import Clases_Java.OperacionesLectoEscritura;
 import Enums.EstadoTurno;
 import Excepciones.TurnoNoDisponibleException;
 import Interfaz.Gestor;
@@ -35,7 +35,8 @@ public class GestorTurno implements Gestor<Turno> {
     public void agregar(Turno turno) {
         for (Turno t : turnos) {
             if (t.getMedico().getId() == turno.getMedico().getId() &&
-                    t.getFechaHora().equals(turno.getFechaHora())) {
+                    t.getFechaHora().equals(turno.getFechaHora()) &&
+                    t.isActivo()) {
                 throw new TurnoNoDisponibleException("Turno no disponible");
             }
         }
@@ -63,7 +64,7 @@ public class GestorTurno implements Gestor<Turno> {
     public void eliminar(int id) {
         Turno t = buscarPorId(id);
         if (t != null) {
-            turnos.remove(t);
+            t.setActivo(false);
             guardarEnArchivo();
         }
     }
@@ -81,6 +82,7 @@ public class GestorTurno implements Gestor<Turno> {
             obj.put("idMedico", t.getMedico().getId());
             obj.put("fechaHora", t.getFechaHora().format(FORMATTER));
             obj.put("estado", t.getEstado().name());
+            obj.put("activo", t.isActivo());
             array.put(obj);
         }
         OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
@@ -94,8 +96,10 @@ public class GestorTurno implements Gestor<Turno> {
         JSONArray array = new JSONArray(tokener);
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = array.getJSONObject(i);
+
             Paciente p = gestorPaciente.buscarPorId(obj.getInt("idPaciente"));
             Medico m = gestorMedico.buscarPorId(obj.getInt("idMedico"));
+
             Turno t = new Turno(
                     obj.getInt("id"),
                     p,
@@ -103,8 +107,8 @@ public class GestorTurno implements Gestor<Turno> {
                     LocalDateTime.parse(obj.getString("fechaHora"), FORMATTER),
                     EstadoTurno.valueOf(obj.getString("estado"))
             );
+            t.setActivo(obj.optBoolean("activo", true));
             turnos.add(t);
         }
     }
 }
-
