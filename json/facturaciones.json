@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "idConsulta": 1,
+    "monto": 12000.0,
+    "metodoPago": "EFECTIVO",
+    "pagado": true,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "idConsulta": 2,
+    "monto": 8000.0,
+    "metodoPago": "DEBITO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "idConsulta": 3,
+    "monto": 9500.0,
+    "metodoPago": "CREDITO",
+    "pagado": true,
+    "activo": true
+  },
+  {
+    "id": 4,
+    "idConsulta": 4,
+    "monto": 15000.0,
+    "metodoPago": "EFECTIVO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 5,
+    "idConsulta": 5,
+    "monto": 11000.0,
+    "metodoPago": "DEBITO",
+    "pagado": true,
+    "activo": true
+  },
+  {
+    "id": 6,
+    "idConsulta": 6,
+    "monto": 13000.0,
+    "metodoPago": "CREDITO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 7,
+    "idConsulta": 7,
+    "monto": 14000.0,
+    "metodoPago": "EFECTIVO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 8,
+    "idConsulta": 8,
+    "monto": 10000.0,
+    "metodoPago": "DEBITO",
+    "pagado": true,
+    "activo": true
+  },
+  {
+    "id": 9,
+    "idConsulta": 9,
+    "monto": 9000.0,
+    "metodoPago": "CREDITO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 10,
+    "idConsulta": 10,
+    "monto": 16000.0,
+    "metodoPago": "EFECTIVO",
+    "pagado": true,
+    "activo": true
+  },
+  {
+    "id": 11,
+    "idConsulta": 11,
+    "monto": 7000.0,
+    "metodoPago": "DEBITO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 12,
+    "idConsulta": 12,
+    "monto": 8500.0,
+    "metodoPago": "CREDITO",
+    "pagado": true,
+    "activo": true
+  },
+  {
+    "id": 13,
+    "idConsulta": 13,
+    "monto": 9200.0,
+    "metodoPago": "EFECTIVO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 14,
+    "idConsulta": 14,
+    "monto": 10500.0,
+    "metodoPago": "DEBITO",
+    "pagado": false,
+    "activo": true
+  },
+  {
+    "id": 15,
+    "idConsulta": 15,
+    "monto": 9800.0,
+    "metodoPago": "CREDITO",
+    "pagado": true,
+    "activo": true
+  }
+]

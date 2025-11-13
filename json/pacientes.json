@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "dni": 40123456,
+    "telefono": 223112233,
+    "email": "juan.perez@mail.com",
+    "contrasena": "pac123",
+    "obraSocial": "OSDE",
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "Lucía",
+    "apellido": "González",
+    "dni": 41123457,
+    "telefono": 223223344,
+    "email": "lucia.gonzalez@mail.com",
+    "contrasena": "pac234",
+    "obraSocial": "Swiss Medical",
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "Matías",
+    "apellido": "Soria",
+    "dni": 42123458,
+    "telefono": 223334455,
+    "email": "matias.soria@mail.com",
+    "contrasena": "pac345",
+    "obraSocial": "IOMA",
+    "activo": true
+  },
+  {
+    "id": 4,
+    "nombre": "Paula",
+    "apellido": "Fernández",
+    "dni": 43123459,
+    "telefono": 223445566,
+    "email": "paula.fernandez@mail.com",
+    "contrasena": "pac456",
+    "obraSocial": "OSDE",
+    "activo": true
+  },
+  {
+    "id": 5,
+    "nombre": "Carlos",
+    "apellido": "Mendoza",
+    "dni": 44123460,
+    "telefono": 223556677,
+    "email": "carlos.mendoza@mail.com",
+    "contrasena": "pac567",
+    "obraSocial": "PAMI",
+    "activo": true
+  },
+  {
+    "id": 6,
+    "nombre": "Valentina",
+    "apellido": "López",
+    "dni": 45123461,
+    "telefono": 223667788,
+    "email": "valentina.lopez@mail.com",
+    "contrasena": "pac678",
+    "obraSocial": "Swiss Medical",
+    "activo": true
+  },
+  {
+    "id": 7,
+    "nombre": "Gonzalo",
+    "apellido": "Ramos",
+    "dni": 46123462,
+    "telefono": 223778899,
+    "email": "gonzalo.ramos@mail.com",
+    "contrasena": "pac789",
+    "obraSocial": "OSDE",
+    "activo": true
+  },
+  {
+    "id": 8,
+    "nombre": "Sabrina",
+    "apellido": "Domínguez",
+    "dni": 47123463,
+    "telefono": 223889900,
+    "email": "sabrina.dominguez@mail.com",
+    "contrasena": "pac890",
+    "obraSocial": "PAMI",
+    "activo": true
+  },
+  {
+    "id": 9,
+    "nombre": "Nicolás",
+    "apellido": "Rivero",
+    "dni": 48123464,
+    "telefono": 223990011,
+    "email": "nicolas.rivero@mail.com",
+    "contrasena": "pac901",
+    "obraSocial": "IOMA",
+    "activo": true
+  },
+  {
+    "id": 10,
+    "nombre": "Florencia",
+    "apellido": "Acosta",
+    "dni": 49123465,
+    "telefono": 223101112,
+    "email": "florencia.acosta@mail.com",
+    "contrasena": "pac012",
+    "obraSocial": "OSDE",
+    "activo": true
+  },
+  {
+    "id": 11,
+    "nombre": "Ezequiel",
+    "apellido": "Ortiz",
+    "dni": 50123466,
+    "telefono": 223212223,
+    "email": "ezequiel.ortiz@mail.com",
+    "contrasena": "pac345",
+    "obraSocial": "PAMI",
+    "activo": true
+  },
+  {
+    "id": 12,
+    "nombre": "Julieta",
+    "apellido": "Moreno",
+    "dni": 51123467,
+    "telefono": 223323334,
+    "email": "julieta.moreno@mail.com",
+    "contrasena": "pac678",
+    "obraSocial": "OSDE",
+    "activo": true
+  },
+  {
+    "id": 13,
+    "nombre": "Martín",
+    "apellido": "Vega",
+    "dni": 52123468,
+    "telefono": 223434445,
+    "email": "martin.vega@mail.com",
+    "contrasena": "pac901",
+    "obraSocial": "Swiss Medical",
+    "activo": true
+  },
+  {
+    "id": 14,
+    "nombre": "Carla",
+    "apellido": "Giménez",
+    "dni": 53123469,
+    "telefono": 223545556,
+    "email": "carla.gimenez@mail.com",
+    "contrasena": "pac234",
+    "obraSocial": "IOMA",
+    "activo": true
+  },
+  {
+    "id": 15,
+    "nombre": "Diego",
+    "apellido": "Paz",
+    "dni": 54123470,
+    "telefono": 223656667,
+    "email": "diego.paz@mail.com",
+    "contrasena": "pac567",
+    "obraSocial": "OSDE",
+    "activo": true
+  }
+]

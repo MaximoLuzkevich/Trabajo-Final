@@ -1,39 +1,66 @@
 package Gestores;
 
 import Clases_Java.Medico;
-import Clases_Java.OperacionesLectoEscritura;
 import Excepciones.UsuarioNoEncontradoException;
 import Interfaz.Gestor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestorMedico implements Gestor<Medico> {
 
+    private static final String RUTA = System.getProperty("user.dir")
+            + File.separator + "json" + File.separator;
+
+    private static final String ARCHIVO_JSON = RUTA + "medicos.json";
+
     private List<Medico> medicos;
-    private static final String ARCHIVO_JSON = "medicos.json";
 
     public GestorMedico() {
-        this.medicos = new ArrayList<>();
+        medicos = new ArrayList<>();
+        inicializarArchivos();
         cargarDesdeArchivo();
     }
 
+    private void inicializarArchivos() {
+
+        File carpeta = new File(RUTA);
+        if (!carpeta.exists()) carpeta.mkdirs();
+
+        File archivo = new File(ARCHIVO_JSON);
+        if (!archivo.exists()) {
+            try {
+                archivo.createNewFile();
+                FileWriter fw = new FileWriter(archivo);
+                fw.write("[]");
+                fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public void agregar(Medico medico) {
         medicos.add(medico);
         guardarEnArchivo();
     }
 
+    @Override
     public Medico buscarPorId(int id) {
         for (Medico m : medicos) {
-            if (m.getId() == id) return m;
+            if (m.getId() == id && m.isActivo()) {
+                return m;
+            }
         }
         throw new UsuarioNoEncontradoException("Médico no encontrado con ID " + id);
     }
 
+    @Override
     public void modificar(Medico medicoModificado) {
         for (int i = 0; i < medicos.size(); i++) {
             if (medicos.get(i).getId() == medicoModificado.getId()) {
@@ -45,18 +72,25 @@ public class GestorMedico implements Gestor<Medico> {
         throw new UsuarioNoEncontradoException("Médico no encontrado para modificar");
     }
 
+    @Override
     public void eliminar(int id) {
         Medico m = buscarPorId(id);
-        m.setActivo(false);
+        m.setActivo(false); // baja lógica
         guardarEnArchivo();
     }
 
+    @Override
     public List<Medico> listar() {
-        return medicos;
+        List<Medico> activos = new ArrayList<>();
+        for (Medico m : medicos) {
+            if (m.isActivo()) activos.add(m);
+        }
+        return activos;
     }
 
     private void guardarEnArchivo() {
         JSONArray array = new JSONArray();
+
         for (Medico m : medicos) {
             JSONObject obj = new JSONObject();
             obj.put("id", m.getId());
@@ -71,30 +105,44 @@ public class GestorMedico implements Gestor<Medico> {
             obj.put("activo", m.isActivo());
             array.put(obj);
         }
-        OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
+
+        try (FileWriter fw = new FileWriter(ARCHIVO_JSON)) {
+            fw.write(array.toString(4)); // indentado prolijo
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void cargarDesdeArchivo() {
-        File f = new File(ARCHIVO_JSON);
-        if (!f.exists()) return;
-        JSONTokener tokener = OperacionesLectoEscritura.leer(ARCHIVO_JSON);
-        if (tokener == null) return;
-        JSONArray array = new JSONArray(tokener);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = array.getJSONObject(i);
-            Medico m = new Medico(
-                    obj.getInt("id"),
-                    obj.getString("nombre"),
-                    obj.getString("apellido"),
-                    obj.getInt("dni"),
-                    obj.getInt("telefono"),
-                    obj.getString("email"),
-                    obj.getString("contrasena"),
-                    obj.getString("especialidad"),
-                    obj.getString("matricula")
-            );
-            m.setActivo(obj.optBoolean("activo", true));
-            medicos.add(m);
+        try {
+            FileReader reader = new FileReader(ARCHIVO_JSON);
+            JSONTokener tokener = new JSONTokener(reader);
+            JSONArray array = new JSONArray(tokener);
+
+            medicos.clear();
+
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+
+                Medico m = new Medico(
+                        obj.getInt("id"),
+                        obj.getString("nombre"),
+                        obj.getString("apellido"),
+                        obj.getInt("dni"),
+                        obj.getInt("telefono"),
+                        obj.getString("email"),
+                        obj.getString("contrasena"),
+                        obj.getString("especialidad"),
+                        obj.getString("matricula")
+                );
+
+                m.setActivo(obj.getBoolean("activo"));
+
+                medicos.add(m);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

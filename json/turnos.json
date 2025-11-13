@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "idPaciente": 1,
+    "idMedico": 1,
+    "fechaHora": "2025-11-15T10:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 2,
+    "idPaciente": 2,
+    "idMedico": 2,
+    "fechaHora": "2025-11-15T10:30:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 3,
+    "idPaciente": 3,
+    "idMedico": 3,
+    "fechaHora": "2025-11-15T11:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 4,
+    "idPaciente": 4,
+    "idMedico": 4,
+    "fechaHora": "2025-11-15T11:30:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 5,
+    "idPaciente": 5,
+    "idMedico": 5,
+    "fechaHora": "2025-11-15T12:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 6,
+    "idPaciente": 6,
+    "idMedico": 6,
+    "fechaHora": "2025-11-16T09:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 7,
+    "idPaciente": 7,
+    "idMedico": 7,
+    "fechaHora": "2025-11-16T09:30:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 8,
+    "idPaciente": 8,
+    "idMedico": 8,
+    "fechaHora": "2025-11-16T10:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 9,
+    "idPaciente": 9,
+    "idMedico": 9,
+    "fechaHora": "2025-11-16T10:30:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 10,
+    "idPaciente": 10,
+    "idMedico": 10,
+    "fechaHora": "2025-11-16T11:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 11,
+    "idPaciente": 11,
+    "idMedico": 11,
+    "fechaHora": "2025-11-17T09:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 12,
+    "idPaciente": 12,
+    "idMedico": 12,
+    "fechaHora": "2025-11-17T09:30:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 13,
+    "idPaciente": 13,
+    "idMedico": 13,
+    "fechaHora": "2025-11-17T10:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 14,
+    "idPaciente": 14,
+    "idMedico": 14,
+    "fechaHora": "2025-11-17T10:30:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  },
+  {
+    "id": 15,
+    "idPaciente": 15,
+    "idMedico": 15,
+    "fechaHora": "2025-11-17T11:00:00",
+    "estado": "CONFIRMADO",
+    "activo": true
+  }
+]

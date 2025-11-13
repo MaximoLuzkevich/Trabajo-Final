@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "idTurno": 1,
+    "diagnostico": "Control clínico de rutina",
+    "observaciones": "Paciente en buen estado general.",
+    "activo": true
+  },
+  {
+    "id": 2,
+    "idTurno": 2,
+    "diagnostico": "Faringitis leve",
+    "observaciones": "Reposo e hidratación.",
+    "activo": true
+  },
+  {
+    "id": 3,
+    "idTurno": 3,
+    "diagnostico": "Dermatitis de contacto",
+    "observaciones": "Recetar crema antihistamínica.",
+    "activo": true
+  },
+  {
+    "id": 4,
+    "idTurno": 4,
+    "diagnostico": "Dolor lumbar",
+    "observaciones": "Se sugiere kinesiología.",
+    "activo": true
+  },
+  {
+    "id": 5,
+    "idTurno": 5,
+    "diagnostico": "Control ginecológico",
+    "observaciones": "Seguimiento anual.",
+    "activo": true
+  },
+  {
+    "id": 6,
+    "idTurno": 6,
+    "diagnostico": "Hipertensión controlada",
+    "observaciones": "Continuar medicación.",
+    "activo": true
+  },
+  {
+    "id": 7,
+    "idTurno": 7,
+    "diagnostico": "Diabetes tipo 2",
+    "observaciones": "Reforzar dieta y controles.",
+    "activo": true
+  },
+  {
+    "id": 8,
+    "idTurno": 8,
+    "diagnostico": "Migraña",
+    "observaciones": "Analizar factores desencadenantes.",
+    "activo": true
+  },
+  {
+    "id": 9,
+    "idTurno": 9,
+    "diagnostico": "Rinitis alérgica",
+    "observaciones": "Antihistamínicos por 7 días.",
+    "activo": true
+  },
+  {
+    "id": 10,
+    "idTurno": 10,
+    "diagnostico": "Control cardiológico",
+    "observaciones": "ECG dentro de parámetros.",
+    "activo": true
+  },
+  {
+    "id": 11,
+    "idTurno": 11,
+    "diagnostico": "Sobrepeso",
+    "observaciones": "Derivar a nutrición.",
+    "activo": true
+  },
+  {
+    "id": 12,
+    "idTurno": 12,
+    "diagnostico": "Cuadro gripal",
+    "observaciones": "Control en 48 hs.",
+    "activo": true
+  },
+  {
+    "id": 13,
+    "idTurno": 13,
+    "diagnostico": "Otitis media",
+    "observaciones": "Antibiótico por 5 días.",
+    "activo": true
+  },
+  {
+    "id": 14,
+    "idTurno": 14,
+    "diagnostico": "Esguince de tobillo",
+    "observaciones": "Vendaje y reposo.",
+    "activo": true
+  },
+  {
+    "id": 15,
+    "idTurno": 15,
+    "diagnostico": "Acné leve",
+    "observaciones": "Higiene diaria y control.",
+    "activo": true
+  }
+]

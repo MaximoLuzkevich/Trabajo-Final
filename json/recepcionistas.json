@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "nombre": "Camila",
+    "apellido": "López",
+    "dni": 40123001,
+    "telefono": 223660001,
+    "email": "camila.lopez@consultorio.com",
+    "contrasena": "recep001",
+    "legajo": 2001,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "Andrés",
+    "apellido": "Fernández",
+    "dni": 40123002,
+    "telefono": 223660002,
+    "email": "andres.fernandez@consultorio.com",
+    "contrasena": "recep002",
+    "legajo": 2002,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "Bruno",
+    "apellido": "Serrano",
+    "dni": 40123003,
+    "telefono": 223660003,
+    "email": "bruno.serrano@consultorio.com",
+    "contrasena": "recep003",
+    "legajo": 2003,
+    "activo": true
+  },
+  {
+    "id": 4,
+    "nombre": "Daniela",
+    "apellido": "Paredes",
+    "dni": 40123004,
+    "telefono": 223660004,
+    "email": "daniela.paredes@consultorio.com",
+    "contrasena": "recep004",
+    "legajo": 2004,
+    "activo": true
+  },
+  {
+    "id": 5,
+    "nombre": "Jorge",
+    "apellido": "Santillán",
+    "dni": 40123005,
+    "telefono": 223660005,
+    "email": "jorge.santillan@consultorio.com",
+    "contrasena": "recep005",
+    "legajo": 2005,
+    "activo": true
+  },
+  {
+    "id": 6,
+    "nombre": "María",
+    "apellido": "Chaves",
+    "dni": 40123006,
+    "telefono": 223660006,
+    "email": "maria.chaves@consultorio.com",
+    "contrasena": "recep006",
+    "legajo": 2006,
+    "activo": true
+  },
+  {
+    "id": 7,
+    "nombre": "Santiago",
+    "apellido": "Pérez",
+    "dni": 40123007,
+    "telefono": 223660007,
+    "email": "santiago.perez@consultorio.com",
+    "contrasena": "recep007",
+    "legajo": 2007,
+    "activo": true
+  },
+  {
+    "id": 8,
+    "nombre": "Lourdes",
+    "apellido": "Aguirre",
+    "dni": 40123008,
+    "telefono": 223660008,
+    "email": "lourdes.aguirre@consultorio.com",
+    "contrasena": "recep008",
+    "legajo": 2008,
+    "activo": true
+  },
+  {
+    "id": 9,
+    "nombre": "Pablo",
+    "apellido": "Valdez",
+    "dni": 40123009,
+    "telefono": 223660009,
+    "email": "pablo.valdez@consultorio.com",
+    "contrasena": "recep009",
+    "legajo": 2009,
+    "activo": true
+  },
+  {
+    "id": 10,
+    "nombre": "Julieta",
+    "apellido": "Ríos",
+    "dni": 40123010,
+    "telefono": 223660010,
+    "email": "julieta.rios@consultorio.com",
+    "contrasena": "recep010",
+    "legajo": 2010,
+    "activo": true
+  },
+  {
+    "id": 11,
+    "nombre": "Tomás",
+    "apellido": "Sosa",
+    "dni": 40123011,
+    "telefono": 223660011,
+    "email": "tomas.sosa@consultorio.com",
+    "contrasena": "recep011",
+    "legajo": 2011,
+    "activo": true
+  },
+  {
+    "id": 12,
+    "nombre": "Valeria",
+    "apellido": "Benítez",
+    "dni": 40123012,
+    "telefono": 223660012,
+    "email": "valeria.benitez@consultorio.com",
+    "contrasena": "recep012",
+    "legajo": 2012,
+    "activo": true
+  },
+  {
+    "id": 13,
+    "nombre": "Martín",
+    "apellido": "Quiroga",
+    "dni": 40123013,
+    "telefono": 223660013,
+    "email": "martin.quiroga@consultorio.com",
+    "contrasena": "recep013",
+    "legajo": 2013,
+    "activo": true
+  },
+  {
+    "id": 14,
+    "nombre": "Rocío",
+    "apellido": "Acosta",
+    "dni": 40123014,
+    "telefono": 223660014,
+    "email": "rocio.acosta@consultorio.com",
+    "contrasena": "recep014",
+    "legajo": 2014,
+    "activo": true
+  },
+  {
+    "id": 15,
+    "nombre": "Nicolás",
+    "apellido": "Bravo",
+    "dni": 40123015,
+    "telefono": 223660015,
+    "email": "nicolas.bravo@consultorio.com",
+    "contrasena": "recep015",
+    "legajo": 2015,
+    "activo": true
+  }
+]

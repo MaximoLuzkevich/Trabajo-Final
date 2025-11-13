@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "nombre": "Sofía",
+    "apellido": "Martínez",
+    "dni": 35123456,
+    "telefono": 223556677,
+    "email": "sofia.martinez@consultorio.com",
+    "contrasena": "admin123",
+    "legajo": 1001,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "Lucas",
+    "apellido": "Ramos",
+    "dni": 36222333,
+    "telefono": 223998877,
+    "email": "lucas.ramos@consultorio.com",
+    "contrasena": "admin456",
+    "legajo": 1002,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "Mariana",
+    "apellido": "López",
+    "dni": 33222111,
+    "telefono": 223221133,
+    "email": "mariana.lopez@consultorio.com",
+    "contrasena": "admin789",
+    "legajo": 1003,
+    "activo": true
+  },
+  {
+    "id": 4,
+    "nombre": "Diego",
+    "apellido": "Sánchez",
+    "dni": 34500111,
+    "telefono": 223889922,
+    "email": "diego.sanchez@consultorio.com",
+    "contrasena": "admin000",
+    "legajo": 1004,
+    "activo": true
+  },
+  {
+    "id": 5,
+    "nombre": "Carolina",
+    "apellido": "Vega",
+    "dni": 33888999,
+    "telefono": 223770011,
+    "email": "carolina.vega@consultorio.com",
+    "contrasena": "admincaro",
+    "legajo": 1005,
+    "activo": true
+  },
+  {
+    "id": 6,
+    "nombre": "Hernán",
+    "apellido": "Paz",
+    "dni": 32000999,
+    "telefono": 223770022,
+    "email": "hernan.paz@consultorio.com",
+    "contrasena": "adminhp",
+    "legajo": 1006,
+    "activo": true
+  },
+  {
+    "id": 7,
+    "nombre": "Brenda",
+    "apellido": "Silva",
+    "dni": 32999111,
+    "telefono": 223770033,
+    "email": "brenda.silva@consultorio.com",
+    "contrasena": "adminbs",
+    "legajo": 1007,
+    "activo": true
+  },
+  {
+    "id": 8,
+    "nombre": "Tomás",
+    "apellido": "Gutiérrez",
+    "dni": 31000123,
+    "telefono": 223770044,
+    "email": "tomas.gutierrez@consultorio.com",
+    "contrasena": "admintg",
+    "legajo": 1008,
+    "activo": true
+  },
+  {
+    "id": 9,
+    "nombre": "Jimena",
+    "apellido": "Rocha",
+    "dni": 33000123,
+    "telefono": 223770055,
+    "email": "jimena.rocha@consultorio.com",
+    "contrasena": "adminjr",
+    "legajo": 1009,
+    "activo": true
+  },
+  {
+    "id": 10,
+    "nombre": "Pablo",
+    "apellido": "Castro",
+    "dni": 32555000,
+    "telefono": 223770066,
+    "email": "pablo.castro@consultorio.com",
+    "contrasena": "adminpc",
+    "legajo": 1010,
+    "activo": true
+  },
+  {
+    "id": 11,
+    "nombre": "Rocío",
+    "apellido": "Bustamante",
+    "dni": 32999000,
+    "telefono": 223770077,
+    "email": "rocio.bustamante@consultorio.com",
+    "contrasena": "adminrb",
+    "legajo": 1011,
+    "activo": true
+  },
+  {
+    "id": 12,
+    "nombre": "Germán",
+    "apellido": "Peralta",
+    "dni": 33555111,
+    "telefono": 223770088,
+    "email": "german.peralta@consultorio.com",
+    "contrasena": "admingp",
+    "legajo": 1012,
+    "activo": true
+  },
+  {
+    "id": 13,
+    "nombre": "Cecilia",
+    "apellido": "Ibarra",
+    "dni": 33322111,
+    "telefono": 223770099,
+    "email": "cecilia.ibarra@consultorio.com",
+    "contrasena": "adminci",
+    "legajo": 1013,
+    "activo": true
+  },
+  {
+    "id": 14,
+    "nombre": "Federico",
+    "apellido": "Molina",
+    "dni": 32987654,
+    "telefono": 223770010,
+    "email": "federico.molina@consultorio.com",
+    "contrasena": "adminfm",
+    "legajo": 1014,
+    "activo": true
+  },
+  {
+    "id": 15,
+    "nombre": "Natalia",
+    "apellido": "Arias",
+    "dni": 32765432,
+    "telefono": 223770020,
+    "email": "natalia.arias@consultorio.com",
+    "contrasena": "adminna",
+    "legajo": 1015,
+    "activo": true
+  }
+]
