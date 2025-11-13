@@ -1,5 +1,6 @@
 package Gestores;
 
+import Clases_Java.OperacionesLectoEscritura;
 import Clases_Java.Recepcionista;
 import Excepciones.UsuarioNoEncontradoException;
 import Interfaz.Gestor;
@@ -7,49 +8,32 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestorRecepcionista implements Gestor<Recepcionista> {
 
-    private static final String RUTA = System.getProperty("user.dir")
-            + File.separator + "json" + File.separator;
-
-    private static final String ARCHIVO_JSON = RUTA + "recepcionistas.json";
-
     private List<Recepcionista> recepcionistas;
+    private static final String ARCHIVO_JSON = "json/recepcionistas.json";
 
     public GestorRecepcionista() {
-        recepcionistas = new ArrayList<>();
-        inicializarArchivos();
+        this.recepcionistas = new ArrayList<>();
         cargarDesdeArchivo();
     }
 
-    private void inicializarArchivos() {
-
-        File carpeta = new File(RUTA);
-        if (!carpeta.exists()) carpeta.mkdirs();
-
-        File archivo = new File(ARCHIVO_JSON);
-        if (!archivo.exists()) {
-            try {
-                archivo.createNewFile();
-                FileWriter fw = new FileWriter(archivo);
-                fw.write("[]");
-                fw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+    // ----------------------------------------------------------
+    // AGREGAR
+    // ----------------------------------------------------------
     @Override
     public void agregar(Recepcionista recepcionista) {
         recepcionistas.add(recepcionista);
         guardarEnArchivo();
     }
 
+    // ----------------------------------------------------------
+    // BUSCAR POR ID
+    // ----------------------------------------------------------
     @Override
     public Recepcionista buscarPorId(int id) {
         for (Recepcionista r : recepcionistas) {
@@ -60,6 +44,9 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
         throw new UsuarioNoEncontradoException("Recepcionista no encontrado con ID " + id);
     }
 
+    // ----------------------------------------------------------
+    // MODIFICAR
+    // ----------------------------------------------------------
     @Override
     public void modificar(Recepcionista recepcionistaModificado) {
         for (int i = 0; i < recepcionistas.size(); i++) {
@@ -72,22 +59,33 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
         throw new UsuarioNoEncontradoException("Recepcionista no encontrado para modificar");
     }
 
+    // ----------------------------------------------------------
+    // BAJA LÓGICA
+    // ----------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Recepcionista r = buscarPorId(id);
-        r.setActivo(false); // baja lógica
+        Recepcionista r = buscarPorId(id); // lanza excepción si no existe
+        r.setActivo(false);
         guardarEnArchivo();
     }
 
+    // ----------------------------------------------------------
+    // LISTAR SOLO ACTIVOS
+    // ----------------------------------------------------------
     @Override
     public List<Recepcionista> listar() {
         List<Recepcionista> activos = new ArrayList<>();
         for (Recepcionista r : recepcionistas) {
-            if (r.isActivo()) activos.add(r);
+            if (r.isActivo()) {
+                activos.add(r);
+            }
         }
         return activos;
     }
 
+    // ----------------------------------------------------------
+    // GUARDAR JSON
+    // ----------------------------------------------------------
     private void guardarEnArchivo() {
         JSONArray array = new JSONArray();
 
@@ -105,42 +103,38 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
             array.put(obj);
         }
 
-        try (FileWriter fw = new FileWriter(ARCHIVO_JSON)) {
-            fw.write(array.toString(4)); // indentado profesional
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
     }
 
+    // ----------------------------------------------------------
+    // CARGAR JSON
+    // ----------------------------------------------------------
     private void cargarDesdeArchivo() {
-        try {
-            FileReader reader = new FileReader(ARCHIVO_JSON);
-            JSONTokener tokener = new JSONTokener(reader);
-            JSONArray array = new JSONArray(tokener);
+        File file = new File(ARCHIVO_JSON);
+        if (!file.exists()) return;
 
-            recepcionistas.clear();
+        JSONTokener tokener = OperacionesLectoEscritura.leer(ARCHIVO_JSON);
+        if (tokener == null) return;
 
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
+        JSONArray array = new JSONArray(tokener);
 
-                Recepcionista r = new Recepcionista(
-                        obj.getInt("id"),
-                        obj.getString("nombre"),
-                        obj.getString("apellido"),
-                        obj.getInt("dni"),
-                        obj.getInt("telefono"),
-                        obj.getString("email"),
-                        obj.getString("contrasena"),
-                        obj.getInt("legajo")
-                );
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
 
-                r.setActivo(obj.getBoolean("activo"));
+            Recepcionista r = new Recepcionista(
+                    obj.getInt("id"),
+                    obj.getString("nombre"),
+                    obj.getString("apellido"),
+                    obj.getInt("dni"),
+                    obj.getInt("telefono"),
+                    obj.getString("email"),
+                    obj.getString("contrasena"),
+                    obj.getInt("legajo")
+            );
 
-                recepcionistas.add(r);
-            }
+            r.setActivo(obj.optBoolean("activo", true));
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            recepcionistas.add(r);
         }
     }
 }

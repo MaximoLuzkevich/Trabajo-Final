@@ -1,55 +1,39 @@
 package Gestores;
 
 import Clases_Java.Administrador;
+import Clases_Java.OperacionesLectoEscritura;
 import Excepciones.UsuarioNoEncontradoException;
 import Interfaz.Gestor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestorAdministrador implements Gestor<Administrador> {
 
-    private static final String RUTA = System.getProperty("user.dir")
-            + File.separator + "json" + File.separator;
-
-    private static final String ARCHIVO_JSON = RUTA + "administradores.json";
-
     private List<Administrador> administradores;
+    private static final String ARCHIVO_JSON = "json/administradores.json";
 
     public GestorAdministrador() {
-        administradores = new ArrayList<>();
-        inicializarArchivos();
+        this.administradores = new ArrayList<>();
         cargarDesdeArchivo();
     }
 
-    private void inicializarArchivos() {
-
-        File carpeta = new File(RUTA);
-        if (!carpeta.exists()) carpeta.mkdirs();
-
-        File archivo = new File(ARCHIVO_JSON);
-        if (!archivo.exists()) {
-            try {
-                archivo.createNewFile();
-                FileWriter fw = new FileWriter(archivo);
-                fw.write("[]");
-                fw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+    // ----------------------------------------------------------
+    // AGREGAR
+    // ----------------------------------------------------------
     @Override
     public void agregar(Administrador administrador) {
         administradores.add(administrador);
         guardarEnArchivo();
     }
 
+    // ----------------------------------------------------------
+    // BUSCAR POR ID (con excepción)
+    // ----------------------------------------------------------
     @Override
     public Administrador buscarPorId(int id) {
         for (Administrador a : administradores) {
@@ -60,6 +44,9 @@ public class GestorAdministrador implements Gestor<Administrador> {
         throw new UsuarioNoEncontradoException("Administrador no encontrado con ID " + id);
     }
 
+    // ----------------------------------------------------------
+    // MODIFICAR
+    // ----------------------------------------------------------
     @Override
     public void modificar(Administrador adminModificado) {
         for (int i = 0; i < administradores.size(); i++) {
@@ -72,22 +59,33 @@ public class GestorAdministrador implements Gestor<Administrador> {
         throw new UsuarioNoEncontradoException("Administrador no encontrado para modificar");
     }
 
+    // ----------------------------------------------------------
+    // BAJA LÓGICA
+    // ----------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Administrador a = buscarPorId(id);
-        a.setActivo(false); // baja lógica
+        Administrador a = buscarPorId(id); // lanza excepción si no existe
+        a.setActivo(false);
         guardarEnArchivo();
     }
 
+    // ----------------------------------------------------------
+    // LISTAR SOLO ACTIVOS
+    // ----------------------------------------------------------
     @Override
     public List<Administrador> listar() {
         List<Administrador> activos = new ArrayList<>();
         for (Administrador a : administradores) {
-            if (a.isActivo()) activos.add(a);
+            if (a.isActivo()) {
+                activos.add(a);
+            }
         }
         return activos;
     }
 
+    // ----------------------------------------------------------
+    // GUARDAR JSON
+    // ----------------------------------------------------------
     private void guardarEnArchivo() {
         JSONArray array = new JSONArray();
 
@@ -105,43 +103,38 @@ public class GestorAdministrador implements Gestor<Administrador> {
             array.put(obj);
         }
 
-        try (FileWriter fw = new FileWriter(ARCHIVO_JSON)) {
-            fw.write(array.toString(4)); // indentado prolijo
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
     }
 
+    // ----------------------------------------------------------
+    // CARGAR JSON
+    // ----------------------------------------------------------
     private void cargarDesdeArchivo() {
-        try {
-            FileReader reader = new FileReader(ARCHIVO_JSON);
-            JSONTokener tokener = new JSONTokener(reader);
-            JSONArray array = new JSONArray(tokener);
+        File file = new File(ARCHIVO_JSON);
+        if (!file.exists()) return;
 
-            administradores.clear();
+        JSONTokener tokener = OperacionesLectoEscritura.leer(ARCHIVO_JSON);
+        if (tokener == null) return;
 
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
+        JSONArray array = new JSONArray(tokener);
 
-                Administrador a = new Administrador(
-                        obj.getInt("id"),
-                        obj.getString("nombre"),
-                        obj.getString("apellido"),
-                        obj.getInt("dni"),
-                        obj.getInt("telefono"),
-                        obj.getString("email"),
-                        obj.getString("contrasena"),
-                        obj.getInt("legajo")
-                );
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
 
-                a.setActivo(obj.getBoolean("activo"));
+            Administrador a = new Administrador(
+                    obj.getInt("id"),
+                    obj.getString("nombre"),
+                    obj.getString("apellido"),
+                    obj.getInt("dni"),
+                    obj.getInt("telefono"),
+                    obj.getString("email"),
+                    obj.getString("contrasena"),
+                    obj.getInt("legajo")
+            );
 
-                administradores.add(a);
-            }
+            a.setActivo(obj.optBoolean("activo", true));
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            administradores.add(a);
         }
     }
 }
-

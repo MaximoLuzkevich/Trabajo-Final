@@ -1,6 +1,6 @@
 package Servicios; // paquete de servicios
 
-// imports de las clases de tu dominio
+// imports de las clases
 import Clases_Java.*;
 import Enums.EstadoTurno;
 import Enums.MetodoPago;
@@ -10,9 +10,9 @@ import Gestores.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
-/**
- * Servicio central del sistema.
- * Acá va la lógica de negocio y el acceso a los gestores.
+/*
+  Servicio central del sistema.
+  Acá va la lógica de negocio y el acceso a los gestores.
  */
 public class ServicioConsultorio {
 
@@ -26,7 +26,7 @@ public class ServicioConsultorio {
     private GestorAdministrador gestorAdministrador;// gestor de admins
     private GestorRecepcionista gestorRecepcionista;// gestor de recepcionistas
 
-    // ---------------- COLECCIONES REQUERIDAS POR CONSIGNA ----------------
+
 
     private Set<String> especialidades;             // set para no repetir especialidades
     private Map<Integer, List<Consulta>> historialPorPaciente; // map: idPaciente -> consultas

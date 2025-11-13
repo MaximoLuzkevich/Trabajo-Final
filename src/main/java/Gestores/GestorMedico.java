@@ -1,55 +1,39 @@
 package Gestores;
 
 import Clases_Java.Medico;
+import Clases_Java.OperacionesLectoEscritura;
 import Excepciones.UsuarioNoEncontradoException;
 import Interfaz.Gestor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GestorMedico implements Gestor<Medico> {
 
-    private static final String RUTA = System.getProperty("user.dir")
-            + File.separator + "json" + File.separator;
-
-    private static final String ARCHIVO_JSON = RUTA + "medicos.json";
-
     private List<Medico> medicos;
+    private static final String ARCHIVO_JSON = "json/medicos.json";
 
     public GestorMedico() {
-        medicos = new ArrayList<>();
-        inicializarArchivos();
+        this.medicos = new ArrayList<>();
         cargarDesdeArchivo();
     }
 
-    private void inicializarArchivos() {
-
-        File carpeta = new File(RUTA);
-        if (!carpeta.exists()) carpeta.mkdirs();
-
-        File archivo = new File(ARCHIVO_JSON);
-        if (!archivo.exists()) {
-            try {
-                archivo.createNewFile();
-                FileWriter fw = new FileWriter(archivo);
-                fw.write("[]");
-                fw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+    // ------------------------------------------------------------
+    // AGREGAR
+    // ------------------------------------------------------------
     @Override
     public void agregar(Medico medico) {
         medicos.add(medico);
         guardarEnArchivo();
     }
 
+    // ------------------------------------------------------------
+    // BUSCAR POR ID
+    // ------------------------------------------------------------
     @Override
     public Medico buscarPorId(int id) {
         for (Medico m : medicos) {
@@ -60,6 +44,9 @@ public class GestorMedico implements Gestor<Medico> {
         throw new UsuarioNoEncontradoException("Médico no encontrado con ID " + id);
     }
 
+    // ------------------------------------------------------------
+    // MODIFICAR
+    // ------------------------------------------------------------
     @Override
     public void modificar(Medico medicoModificado) {
         for (int i = 0; i < medicos.size(); i++) {
@@ -72,22 +59,33 @@ public class GestorMedico implements Gestor<Medico> {
         throw new UsuarioNoEncontradoException("Médico no encontrado para modificar");
     }
 
+    // ------------------------------------------------------------
+    // BAJA LÓGICA
+    // ------------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Medico m = buscarPorId(id);
-        m.setActivo(false); // baja lógica
+        Medico m = buscarPorId(id); // lanza excepción si no existe
+        m.setActivo(false);
         guardarEnArchivo();
     }
 
+    // ------------------------------------------------------------
+    // LISTAR SOLO ACTIVOS
+    // ------------------------------------------------------------
     @Override
     public List<Medico> listar() {
         List<Medico> activos = new ArrayList<>();
         for (Medico m : medicos) {
-            if (m.isActivo()) activos.add(m);
+            if (m.isActivo()) {
+                activos.add(m);
+            }
         }
         return activos;
     }
 
+    // ------------------------------------------------------------
+    // GUARDAR JSON
+    // ------------------------------------------------------------
     private void guardarEnArchivo() {
         JSONArray array = new JSONArray();
 
@@ -106,43 +104,40 @@ public class GestorMedico implements Gestor<Medico> {
             array.put(obj);
         }
 
-        try (FileWriter fw = new FileWriter(ARCHIVO_JSON)) {
-            fw.write(array.toString(4)); // indentado prolijo
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        OperacionesLectoEscritura.grabar(ARCHIVO_JSON, array);
     }
 
+    // ------------------------------------------------------------
+    // CARGAR JSON
+    // ------------------------------------------------------------
     private void cargarDesdeArchivo() {
-        try {
-            FileReader reader = new FileReader(ARCHIVO_JSON);
-            JSONTokener tokener = new JSONTokener(reader);
-            JSONArray array = new JSONArray(tokener);
+        File file = new File(ARCHIVO_JSON);
+        if (!file.exists()) return;
 
-            medicos.clear();
+        JSONTokener tokener = OperacionesLectoEscritura.leer(ARCHIVO_JSON);
+        if (tokener == null) return;
 
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
+        JSONArray array = new JSONArray(tokener);
 
-                Medico m = new Medico(
-                        obj.getInt("id"),
-                        obj.getString("nombre"),
-                        obj.getString("apellido"),
-                        obj.getInt("dni"),
-                        obj.getInt("telefono"),
-                        obj.getString("email"),
-                        obj.getString("contrasena"),
-                        obj.getString("especialidad"),
-                        obj.getString("matricula")
-                );
+        for (int i = 0; i < array.length(); i++) {
 
-                m.setActivo(obj.getBoolean("activo"));
+            JSONObject obj = array.getJSONObject(i);
 
-                medicos.add(m);
-            }
+            Medico m = new Medico(
+                    obj.getInt("id"),
+                    obj.getString("nombre"),
+                    obj.getString("apellido"),
+                    obj.getInt("dni"),
+                    obj.getInt("telefono"),
+                    obj.getString("email"),
+                    obj.getString("contrasena"),
+                    obj.getString("especialidad"),
+                    obj.getString("matricula")
+            );
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            m.setActivo(obj.optBoolean("activo", true));
+
+            medicos.add(m);
         }
     }
 }
