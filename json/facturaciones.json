@@ -1,122 +1,122 @@
 [
   {
+    "metodoPago": "EFECTIVO",
+    "monto": 12000,
+    "pagado": true,
     "id": 1,
     "idConsulta": 1,
-    "monto": 12000.0,
-    "metodoPago": "EFECTIVO",
-    "pagado": true,
     "activo": true
   },
   {
+    "metodoPago": "DEBITO",
+    "monto": 8000,
+    "pagado": true,
     "id": 2,
     "idConsulta": 2,
-    "monto": 8000.0,
-    "metodoPago": "DEBITO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "CREDITO",
+    "monto": 9500,
+    "pagado": true,
     "id": 3,
     "idConsulta": 3,
-    "monto": 9500.0,
-    "metodoPago": "CREDITO",
-    "pagado": true,
     "activo": true
   },
   {
+    "metodoPago": "EFECTIVO",
+    "monto": 15000,
+    "pagado": false,
     "id": 4,
     "idConsulta": 4,
-    "monto": 15000.0,
-    "metodoPago": "EFECTIVO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "DEBITO",
+    "monto": 11000,
+    "pagado": true,
     "id": 5,
     "idConsulta": 5,
-    "monto": 11000.0,
-    "metodoPago": "DEBITO",
-    "pagado": true,
     "activo": true
   },
   {
+    "metodoPago": "CREDITO",
+    "monto": 13000,
+    "pagado": false,
     "id": 6,
     "idConsulta": 6,
-    "monto": 13000.0,
-    "metodoPago": "CREDITO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "EFECTIVO",
+    "monto": 14000,
+    "pagado": false,
     "id": 7,
     "idConsulta": 7,
-    "monto": 14000.0,
-    "metodoPago": "EFECTIVO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "DEBITO",
+    "monto": 10000,
+    "pagado": true,
     "id": 8,
     "idConsulta": 8,
-    "monto": 10000.0,
-    "metodoPago": "DEBITO",
-    "pagado": true,
     "activo": true
   },
   {
+    "metodoPago": "CREDITO",
+    "monto": 9000,
+    "pagado": false,
     "id": 9,
     "idConsulta": 9,
-    "monto": 9000.0,
-    "metodoPago": "CREDITO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "EFECTIVO",
+    "monto": 16000,
+    "pagado": true,
     "id": 10,
     "idConsulta": 10,
-    "monto": 16000.0,
-    "metodoPago": "EFECTIVO",
-    "pagado": true,
     "activo": true
   },
   {
+    "metodoPago": "DEBITO",
+    "monto": 7000,
+    "pagado": false,
     "id": 11,
     "idConsulta": 11,
-    "monto": 7000.0,
-    "metodoPago": "DEBITO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "CREDITO",
+    "monto": 8500,
+    "pagado": true,
     "id": 12,
     "idConsulta": 12,
-    "monto": 8500.0,
-    "metodoPago": "CREDITO",
-    "pagado": true,
     "activo": true
   },
   {
+    "metodoPago": "EFECTIVO",
+    "monto": 9200,
+    "pagado": false,
     "id": 13,
     "idConsulta": 13,
-    "monto": 9200.0,
-    "metodoPago": "EFECTIVO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "DEBITO",
+    "monto": 10500,
+    "pagado": false,
     "id": 14,
     "idConsulta": 14,
-    "monto": 10500.0,
-    "metodoPago": "DEBITO",
-    "pagado": false,
     "activo": true
   },
   {
+    "metodoPago": "CREDITO",
+    "monto": 9800,
+    "pagado": true,
     "id": 15,
     "idConsulta": 15,
-    "monto": 9800.0,
-    "metodoPago": "CREDITO",
-    "pagado": true,
     "activo": true
   }
 ]
