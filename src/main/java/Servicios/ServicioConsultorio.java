@@ -1,41 +1,37 @@
-package Servicios; // paquete de servicios
+package Servicios;
 
-// imports de las clases
 import Clases_Java.*;
 import Enums.EstadoTurno;
-import Enums.MetodoPago;
-import Enums.TipoUsuario;
 import Gestores.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-/*
-  Servicio central del sistema.
-  Acá va la lógica de negocio y el acceso a los gestores.
- */
 public class ServicioConsultorio {
 
-    // ---------------- GESTORES ----------------
+    // ================================
+    //          GESTORES
+    // ================================
+    private GestorPaciente gestorPaciente;
+    private GestorMedico gestorMedico;
+    private GestorTurno gestorTurno;
+    private GestorConsulta gestorConsulta;
+    private GestorFacturacion gestorFacturacion;
+    private GestorAdministrador gestorAdministrador;
+    private GestorRecepcionista gestorRecepcionista;
 
-    private GestorPaciente gestorPaciente;          // gestor de pacientes
-    private GestorMedico gestorMedico;              // gestor de médicos
-    private GestorTurno gestorTurno;                // gestor de turnos
-    private GestorConsulta gestorConsulta;          // gestor de consultas
-    private GestorFacturacion gestorFacturacion;    // gestor de facturación
-    private GestorAdministrador gestorAdministrador;// gestor de admins
-    private GestorRecepcionista gestorRecepcionista;// gestor de recepcionistas
+    // ================================
+    //   COLECCIONES PEDIDAS (SET – MAP – LIST)
+    // ================================
+    private Set<String> especialidades;                           // SET
+    private Map<Integer, List<Consulta>> historialPorPaciente;    // MAP
 
-
-
-    private Set<String> especialidades;             // set para no repetir especialidades
-    private Map<Integer, List<Consulta>> historialPorPaciente; // map: idPaciente -> consultas
-
-    // --------------------------------------------------------------
-    // CONSTRUCTOR
-    // --------------------------------------------------------------
+    // ================================
+    //          CONSTRUCTOR
+    // ================================
     public ServicioConsultorio() {
-        // instancio todos los gestores
+
+        // instanciar gestores
         gestorPaciente = new GestorPaciente();
         gestorMedico = new GestorMedico();
         gestorTurno = new GestorTurno(gestorPaciente, gestorMedico);
@@ -44,124 +40,125 @@ public class ServicioConsultorio {
         gestorAdministrador = new GestorAdministrador();
         gestorRecepcionista = new GestorRecepcionista();
 
-        // instancio las colecciones
+        // inicializar colecciones
         especialidades = new HashSet<>();
         historialPorPaciente = new HashMap<>();
 
-        // cargo datos auxiliares
+        // cargar datos del sistema
         cargarEspecialidades();
         cargarHistorialPorPaciente();
     }
 
-    // --------------------------------------------------------------
-    // MÉTODOS AUXILIARES DE INICIALIZACIÓN
-    // --------------------------------------------------------------
-    private void cargarEspecialidades() { // carga las especialidades únicas
-        for (Medico m : gestorMedico.listar()) { // recorro médicos
-            if (m.isActivo()) { // solo activos
-                especialidades.add(m.getEspecialidad()); // agrego al set
+    // ================================
+    //   CARGA INICIAL – SET
+    // ================================
+    private void cargarEspecialidades() {
+        for (Medico m : gestorMedico.listar()) {
+            if (m.isActivo()) {
+                especialidades.add(m.getEspecialidad());
             }
         }
     }
 
-    private void cargarHistorialPorPaciente() { // arma el map paciente -> consultas
-        for (Consulta c : gestorConsulta.listar()) { // recorro consultas
-            if (c.isActivo()) { // solo activas
-                int idPac = c.getTurno().getPaciente().getId(); // saco el id de paciente
-                historialPorPaciente.putIfAbsent(idPac, new ArrayList<>()); // si no existe lo creo
-                historialPorPaciente.get(idPac).add(c); // agrego la consulta
+    // ================================
+    //   CARGA INICIAL – MAP
+    // ================================
+    private void cargarHistorialPorPaciente() {
+        historialPorPaciente.clear();
+
+        for (Consulta c : gestorConsulta.listar()) {
+            if (c.isActivo()) {
+                int idPac = c.getTurno().getPaciente().getId();
+
+                historialPorPaciente
+                        .computeIfAbsent(idPac, k -> new ArrayList<>())
+                        .add(c);
             }
         }
     }
 
-    // --------------------------------------------------------------
-    // LOGIN
-    // --------------------------------------------------------------
-
-    // busca en todos los tipos de usuario
+    // ================================
+    //             LOGIN
+    // ================================
     public Persona login(String email, String contrasena) {
+
         // admin
         for (Administrador a : gestorAdministrador.listar()) {
-            if (a.isActivo() && a.getEmail().equalsIgnoreCase(email) && a.getContrasena().equals(contrasena)) {
+            if (a.isActivo() && a.getEmail().equalsIgnoreCase(email)
+                    && a.getContrasena().equals(contrasena)) {
                 return a;
             }
         }
+
         // recepcionista
         for (Recepcionista r : gestorRecepcionista.listar()) {
-            if (r.isActivo() && r.getEmail().equalsIgnoreCase(email) && r.getContrasena().equals(contrasena)) {
+            if (r.isActivo() && r.getEmail().equalsIgnoreCase(email)
+                    && r.getContrasena().equals(contrasena)) {
                 return r;
             }
         }
-        // médico
+
+        // medico
         for (Medico m : gestorMedico.listar()) {
-            if (m.isActivo() && m.getEmail().equalsIgnoreCase(email) && m.getContrasena().equals(contrasena)) {
+            if (m.isActivo() && m.getEmail().equalsIgnoreCase(email)
+                    && m.getContrasena().equals(contrasena)) {
                 return m;
             }
         }
+
         // paciente
         for (Paciente p : gestorPaciente.listar()) {
-            if (p.isActivo() && p.getEmail().equalsIgnoreCase(email) && p.getContrasena().equals(contrasena)) {
+            if (p.isActivo() && p.getEmail().equalsIgnoreCase(email)
+                    && p.getContrasena().equals(contrasena)) {
                 return p;
             }
         }
-        return null; // si no encontró nada
+
+        return null;
     }
 
-    // --------------------------------------------------------------
-    // REGISTRAR PACIENTE (para la opción "registrarse")
-    // --------------------------------------------------------------
-    public Paciente registrarPaciente(String nombre,
-                                      String apellido,
-                                      int dni,
-                                      int telefono,
-                                      String email,
-                                      String contrasena,
-                                      String obraSocial) {
+    // ================================
+    //   REGISTRO DE PACIENTE
+    // ================================
+    public Paciente registrarPaciente(String nombre, String apellido, int dni, int telefono,
+                                      String email, String contrasena, String obraSocial) {
 
-        // genero un id básico según la cantidad actual
         int nuevoId = gestorPaciente.listar().size() + 1;
 
-        // creo el paciente
-        Paciente nuevo = new Paciente(nuevoId, nombre, apellido, dni, telefono, email, contrasena, obraSocial);
+        Paciente nuevo = new Paciente(nuevoId, nombre, apellido, dni, telefono, email,
+                contrasena, obraSocial);
 
-        // lo guardo
         gestorPaciente.agregar(nuevo);
 
-        return nuevo; // lo devuelvo por si quiero loguearlo directo
+        return nuevo;
     }
 
-    // --------------------------------------------------------------
-    // MÉTODOS PARA PACIENTE
-    // --------------------------------------------------------------
-
-    // listar médicos para que el paciente elija uno
+    // ================================
+    //        MÉTODOS PACIENTE
+    // ================================
     public List<Medico> obtenerMedicosActivos() {
         List<Medico> activos = new ArrayList<>();
         for (Medico m : gestorMedico.listar()) {
-            if (m.isActivo()) {
-                activos.add(m);
-            }
+            if (m.isActivo()) activos.add(m);
         }
         return activos;
     }
 
-    // pedir turno
     public Turno pedirTurno(Paciente paciente, Medico medico, LocalDateTime fechaHora) {
-        // genero un id de turno simple
         int nuevoId = gestorTurno.listar().size() + 1;
-        // creo un turno pendiente
-        Turno turno = new Turno(nuevoId, paciente, medico, fechaHora, EstadoTurno.PENDIENTE);
-        // lo agrego con el gestor (este guarda en json)
-        gestorTurno.agregar(turno);
-        // también actualizo agenda del médico
-        medico.agregarTurnoALaAgenda(turno);
-        // devuelvo
-        return turno;
+
+        Turno t = new Turno(nuevoId, paciente, medico, fechaHora, EstadoTurno.PENDIENTE);
+        gestorTurno.agregar(t);
+
+        // actualizar agenda del médico
+        medico.agregarTurnoALaAgenda(t);
+
+        return t;
     }
 
-    // cancelar turno del paciente
     public boolean cancelarTurnoPaciente(Paciente paciente, int idTurno) {
         Turno t = gestorTurno.buscarPorId(idTurno);
+
         if (t != null && t.isActivo() && t.getPaciente().getId() == paciente.getId()) {
             t.setEstado(EstadoTurno.CANCELADO);
             gestorTurno.modificar(t);
@@ -170,45 +167,38 @@ public class ServicioConsultorio {
         return false;
     }
 
-    // consultar turnos del paciente
     public List<Turno> obtenerTurnosDePaciente(Paciente paciente) {
-        List<Turno> resultado = new ArrayList<>();
+        List<Turno> result = new ArrayList<>();
+
         for (Turno t : gestorTurno.listar()) {
             if (t.isActivo() && t.getPaciente().getId() == paciente.getId()) {
-                resultado.add(t);
+                result.add(t);
             }
         }
-        return resultado;
+
+        return result;
     }
 
-    // ver historial médico (consultas) del paciente
     public List<Consulta> obtenerHistorialPaciente(Paciente paciente) {
-        List<Consulta> resultado = new ArrayList<>();
-        for (Consulta c : gestorConsulta.listar()) {
-            if (c.isActivo() && c.getTurno().getPaciente().getId() == paciente.getId()) {
-                resultado.add(c);
-            }
-        }
-        return resultado;
+        return historialPorPaciente.getOrDefault(paciente.getId(), new ArrayList<>());
     }
 
-    // obtener facturas de un paciente (a partir de las consultas de ese paciente)
     public List<Facturacion> obtenerFacturasDePaciente(Paciente paciente) {
-        List<Facturacion> resultado = new ArrayList<>();
+        List<Facturacion> result = new ArrayList<>();
+
         for (Facturacion f : gestorFacturacion.listar()) {
             if (f.isActivo()) {
-                int idPacDeLaFactura = f.getConsulta().getTurno().getPaciente().getId();
-                if (idPacDeLaFactura == paciente.getId()) {
-                    resultado.add(f);
-                }
+                int idPac = f.getConsulta().getTurno().getPaciente().getId();
+                if (idPac == paciente.getId()) result.add(f);
             }
         }
-        return resultado;
+
+        return result;
     }
 
-    // pagar una factura (simulado)
     public boolean pagarFactura(int idFactura) {
         Facturacion f = gestorFacturacion.buscarPorId(idFactura);
+
         if (f != null && f.isActivo() && !f.isPagado()) {
             f.setPagado(true);
             gestorFacturacion.modificar(f);
@@ -217,44 +207,62 @@ public class ServicioConsultorio {
         return false;
     }
 
-    // --------------------------------------------------------------
-    // MÉTODOS PARA MÉDICO
-    // --------------------------------------------------------------
+    // ================================
+    //       REGISTRAR CONSULTA
+    // ================================
+    public Consulta registrarConsulta(Turno turno, String diagnostico, String observaciones) {
 
-    // ver agenda del médico
-    public List<Turno> obtenerTurnosDeMedico(Medico medico) {
-        List<Turno> resultado = new ArrayList<>();
-        for (Turno t : gestorTurno.listar()) {
-            if (t.isActivo() && t.getMedico().getId() == medico.getId()) {
-                resultado.add(t);
-            }
-        }
-        return resultado;
+        int nuevoId = gestorConsulta.listar().size() + 1;
+
+        Consulta c = new Consulta(nuevoId, turno, diagnostico, observaciones);
+        gestorConsulta.agregar(c);
+
+        int idPac = turno.getPaciente().getId();
+
+        historialPorPaciente
+                .computeIfAbsent(idPac, k -> new ArrayList<>())
+                .add(c);
+
+        return c;
     }
 
-    // médico cancela turno
+    // ================================
+    //          MÉTODOS MÉDICO
+    // ================================
+    public List<Turno> obtenerTurnosDeMedico(Medico medico) {
+        List<Turno> result = new ArrayList<>();
+
+        for (Turno t : gestorTurno.listar()) {
+            if (t.isActivo() && t.getMedico().getId() == medico.getId()) {
+                result.add(t);
+            }
+        }
+
+        return result;
+    }
+
     public boolean medicoCancelaTurno(Medico medico, int idTurno) {
         Turno t = gestorTurno.buscarPorId(idTurno);
+
         if (t != null && t.isActivo() && t.getMedico().getId() == medico.getId()) {
             t.setEstado(EstadoTurno.CANCELADO);
             gestorTurno.modificar(t);
             return true;
         }
+
         return false;
     }
 
-    // consultar estado de un turno (médico)
     public Turno consultarTurno(int idTurno) {
         return gestorTurno.buscarPorId(idTurno);
     }
 
-    // --------------------------------------------------------------
-    // MÉTODOS PARA RECEPCIONISTA
-    // --------------------------------------------------------------
-
-    // recepcionista confirma turno
+    // ================================
+    //     MÉTODOS RECEPCIONISTA
+    // ================================
     public boolean confirmarTurno(int idTurno) {
         Turno t = gestorTurno.buscarPorId(idTurno);
+
         if (t != null && t.isActivo()) {
             t.setEstado(EstadoTurno.CONFIRMADO);
             gestorTurno.modificar(t);
@@ -263,40 +271,40 @@ public class ServicioConsultorio {
         return false;
     }
 
-    // recepcionista agenda un turno (similar a pedirTurno pero sin paciente logueado)
     public Turno agendarTurnoRecepcionista(int idPaciente, int idMedico, LocalDateTime fechaHora) {
         Paciente p = gestorPaciente.buscarPorId(idPaciente);
         Medico m = gestorMedico.buscarPorId(idMedico);
         return pedirTurno(p, m, fechaHora);
     }
 
-    // recepcionista ve la agenda de todos los médicos
     public Map<Medico, List<Turno>> obtenerAgendaCompleta() {
         Map<Medico, List<Turno>> mapa = new HashMap<>();
+
         for (Medico m : gestorMedico.listar()) {
             if (m.isActivo()) {
-                List<Turno> turnosMed = obtenerTurnosDeMedico(m);
-                mapa.put(m, turnosMed);
+                mapa.put(m, obtenerTurnosDeMedico(m));
             }
         }
         return mapa;
     }
 
-    // --------------------------------------------------------------
-    // MÉTODOS PARA ADMINISTRADOR
-    // --------------------------------------------------------------
-
-    // crear médico
+    // ================================
+    //      MÉTODOS ADMINISTRADOR
+    // ================================
     public Medico crearMedico(String nombre, String apellido, int dni, int telefono,
                               String email, String contrasena, String especialidad, String matricula) {
+
         int nuevoId = gestorMedico.listar().size() + 1;
-        Medico m = new Medico(nuevoId, nombre, apellido, dni, telefono, email, contrasena, especialidad, matricula);
+
+        Medico m = new Medico(nuevoId, nombre, apellido, dni, telefono, email,
+                contrasena, especialidad, matricula);
+
         gestorMedico.agregar(m);
-        especialidades.add(especialidad); // lo agrego al set
+        especialidades.add(especialidad);
+
         return m;
     }
 
-    // eliminar médico (baja lógica)
     public boolean eliminarMedico(int id) {
         try {
             Medico m = gestorMedico.buscarPorId(id);
@@ -308,16 +316,18 @@ public class ServicioConsultorio {
         }
     }
 
-    // crear recepcionista
     public Recepcionista crearRecepcionista(String nombre, String apellido, int dni, int telefono,
                                             String email, String contrasena, int legajo) {
+
         int nuevoId = gestorRecepcionista.listar().size() + 1;
-        Recepcionista r = new Recepcionista(nuevoId, nombre, apellido, dni, telefono, email, contrasena, legajo);
+
+        Recepcionista r = new Recepcionista(nuevoId, nombre, apellido, dni,
+                telefono, email, contrasena, legajo);
+
         gestorRecepcionista.agregar(r);
         return r;
     }
 
-    // eliminar recepcionista
     public boolean eliminarRecepcionista(int id) {
         try {
             Recepcionista r = gestorRecepcionista.buscarPorId(id);
@@ -329,10 +339,9 @@ public class ServicioConsultorio {
         }
     }
 
-    // --------------------------------------------------------------
-    // GETTERS (para usar desde el main si hace falta)
-    // --------------------------------------------------------------
-
+    // ================================
+    //           GETTERS
+    // ================================
     public GestorPaciente getGestorPaciente() { return gestorPaciente; }
     public GestorMedico getGestorMedico() { return gestorMedico; }
     public GestorTurno getGestorTurno() { return gestorTurno; }
@@ -341,4 +350,3 @@ public class ServicioConsultorio {
     public GestorAdministrador getGestorAdministrador() { return gestorAdministrador; }
     public GestorRecepcionista getGestorRecepcionista() { return gestorRecepcionista; }
 }
-

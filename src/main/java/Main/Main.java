@@ -1,28 +1,25 @@
 package Main; // paquete main
 
 import Clases_Java.*;
-import Enums.EstadoTurno;
 import Servicios.ServicioConsultorio;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Main del sistema. Maneja la interacción por consola.
  */
-public class MainConsultorio {
+public class Main {
 
     public static void main(String[] args) {
 
-        ServicioConsultorio servicio = new ServicioConsultorio(); // creo el servicio
-        Scanner sc = new Scanner(System.in); // scanner para leer
-        boolean salir = false; // bandera de salida
+        ServicioConsultorio servicio = new ServicioConsultorio();
+        Scanner sc = new Scanner(System.in);
+        boolean salir = false;
 
-        while (!salir) { // bucle principal
+        while (!salir) {
 
-            // menú de inicio
             System.out.println("====================================");
             System.out.println("      CONSULTORIO MÉDICO - INICIO   ");
             System.out.println("====================================");
@@ -35,18 +32,18 @@ public class MainConsultorio {
             switch (opcionInicio) {
 
                 case "1": // iniciar sesión
-                    System.out.print("Email: ");
-                    String email = sc.nextLine();
+                    System.out.println("\n=== INICIAR SESIÓN ===");
+                    String emailLogin = leerEmailValido(sc, "Email: ");
                     System.out.print("Contraseña: ");
-                    String pass = sc.nextLine();
+                    String passLogin = sc.nextLine();
 
-                    Persona usuario = servicio.login(email, pass);
+                    Persona usuario = servicio.login(emailLogin, passLogin);
 
                     if (usuario == null) {
                         System.out.println("Usuario o contraseña incorrectos, o usuario inactivo.");
                     } else {
-                        System.out.println("Bienvenido " + usuario.getNombre() + " (" + usuario.getTipoUsuario() + ")");
-                        // en función del tipo de usuario muestro menú
+                        System.out.println("Bienvenido " + usuario.getNombre() +
+                                " (" + usuario.getTipoUsuario() + ")");
                         if (usuario instanceof Paciente) {
                             menuPaciente((Paciente) usuario, servicio, sc);
                         } else if (usuario instanceof Medico) {
@@ -60,23 +57,20 @@ public class MainConsultorio {
                     break;
 
                 case "2": // registro de paciente
-                    System.out.println("=== Registro de Paciente ===");
-                    System.out.print("Nombre: ");
-                    String nom = sc.nextLine();
-                    System.out.print("Apellido: ");
-                    String ape = sc.nextLine();
-                    System.out.print("DNI: ");
-                    int dni = Integer.parseInt(sc.nextLine());
-                    System.out.print("Teléfono: ");
-                    int tel = Integer.parseInt(sc.nextLine());
-                    System.out.print("Email: ");
-                    String mail = sc.nextLine();
+                    System.out.println("\n=== REGISTRO DE PACIENTE ===");
+                    String nom = leerSoloLetras(sc, "Nombre: ");
+                    String ape = leerSoloLetras(sc, "Apellido: ");
+                    int dni = leerEntero(sc, "DNI (solo números): ");
+                    int tel = leerEntero(sc, "Teléfono (solo números): ");
+                    String mail = leerEmailValido(sc, "Email: ");
                     System.out.print("Contraseña: ");
                     String contra = sc.nextLine();
                     System.out.print("Obra social: ");
                     String obra = sc.nextLine();
 
-                    Paciente nuevo = servicio.registrarPaciente(nom, ape, dni, tel, mail, contra, obra);
+                    Paciente nuevo = servicio.registrarPaciente(
+                            nom, ape, dni, tel, mail, contra, obra
+                    );
                     System.out.println("Paciente registrado con ID: " + nuevo.getId());
                     // luego del registro lo mando al menú de paciente
                     menuPaciente(nuevo, servicio, sc);
@@ -92,7 +86,7 @@ public class MainConsultorio {
             }
         }
 
-        sc.close(); // cierro scanner
+        sc.close();
     }
 
     // ----------------------------------------------------------
@@ -105,7 +99,7 @@ public class MainConsultorio {
             System.out.println("1. Pedir turno");
             System.out.println("2. Cancelar turno");
             System.out.println("3. Consultar mis turnos");
-            System.out.println("4. Ver historial médico");
+            System.out.println("4. Ver historial médico (con estado de pago)");
             System.out.println("5. Ver facturas y pagar");
             System.out.println("6. Volver");
             System.out.print("Opción: ");
@@ -118,12 +112,12 @@ public class MainConsultorio {
                         System.out.println("No hay médicos activos.");
                         break;
                     }
-                    System.out.println("Médicos disponibles:");
+                    System.out.println("\nMédicos disponibles:");
                     for (Medico m : medicos) {
-                        System.out.println(m.getId() + " - " + m.getNombre() + " (" + m.getEspecialidad() + ")");
+                        System.out.println(m.getId() + " - " + m.getNombre() + " " + m.getApellido()
+                                + " (" + m.getEspecialidad() + ")");
                     }
-                    System.out.print("Ingrese ID del médico: ");
-                    int idMed = Integer.parseInt(sc.nextLine());
+                    int idMed = leerEntero(sc, "Ingrese ID del médico: ");
                     Medico medicoElegido = null;
                     for (Medico m : medicos) {
                         if (m.getId() == idMed) {
@@ -135,7 +129,8 @@ public class MainConsultorio {
                         System.out.println("Médico no encontrado.");
                         break;
                     }
-                    // turno para mañana ahora (por simplicidad)
+
+                    // por simplicidad, turno para mañana a la misma hora
                     LocalDateTime fechaTurno = LocalDateTime.now().plusDays(1);
                     servicio.pedirTurno(paciente, medicoElegido, fechaTurno);
                     System.out.println("Turno pedido para " + fechaTurno);
@@ -147,12 +142,12 @@ public class MainConsultorio {
                         System.out.println("No tiene turnos.");
                         break;
                     }
-                    System.out.println("Sus turnos:");
+                    System.out.println("\nSus turnos:");
                     for (Turno t : turnosPac) {
-                        System.out.println(t.getId() + " - " + t.getFechaHora() + " - " + t.getEstado());
+                        System.out.println(t.getId() + " - " + t.getFechaHora()
+                                + " - " + t.getEstado());
                     }
-                    System.out.print("ID del turno a cancelar: ");
-                    int idT = Integer.parseInt(sc.nextLine());
+                    int idT = leerEntero(sc, "ID del turno a cancelar: ");
                     boolean ok = servicio.cancelarTurnoPaciente(paciente, idT);
                     System.out.println(ok ? "Turno cancelado." : "No se pudo cancelar el turno.");
                     break;
@@ -162,19 +157,56 @@ public class MainConsultorio {
                     if (turnos.isEmpty()) {
                         System.out.println("No tiene turnos.");
                     } else {
+                        System.out.println("\n--- MIS TURNOS ---");
                         for (Turno t : turnos) {
                             System.out.println(t);
                         }
                     }
                     break;
 
-                case "4": // ver historial médico
+                case "4": // ver historial médico + estado de pago
                     List<Consulta> historial = servicio.obtenerHistorialPaciente(paciente);
                     if (historial.isEmpty()) {
                         System.out.println("No tiene consultas registradas.");
                     } else {
+                        System.out.println("\n--- HISTORIAL MÉDICO ---");
+
+                        // Mapeo consultaId -> facturación (si existe)
+                        List<Facturacion> facturasPaciente = servicio.obtenerFacturasDePaciente(paciente);
+                        Map<Integer, Facturacion> factPorConsulta = new HashMap<>();
+                        for (Facturacion f : facturasPaciente) {
+                            factPorConsulta.put(f.getConsulta().getId(), f);
+                        }
+
                         for (Consulta c : historial) {
-                            System.out.println(c);
+                            Facturacion f = factPorConsulta.get(c.getId());
+                            String estadoPago;
+                            String infoFactura = "";
+                            if (f != null) {
+                                estadoPago = f.isPagado() ? "PAGADA" : "PENDIENTE";
+                                infoFactura = " | ID Factura: " + f.getId();
+                            } else {
+                                estadoPago = "SIN FACTURA";
+                            }
+                            System.out.println("Consulta ID: " + c.getId()
+                                    + " | Diagnóstico: " + c.getDiagnostico()
+                                    + " | Observaciones: " + c.getObservaciones()
+                                    + " | Estado pago: " + estadoPago
+                                    + infoFactura);
+                        }
+
+                        System.out.print("\n¿Desea pagar alguna consulta pendiente? (s/n): ");
+                        String resp = sc.nextLine().trim().toLowerCase();
+                        if (resp.equals("s")) {
+                            int idFacturaPagar = leerEntero(sc, "Ingrese ID de la factura a pagar: ");
+
+                            // Simulamos ingreso de tarjeta (solo para cumplir requerimiento descriptivo)
+                            System.out.print("Ingrese número de tarjeta (solo simulación): ");
+                            String tarjeta = sc.nextLine();
+
+                            boolean pagoOk = servicio.pagarFactura(idFacturaPagar);
+                            System.out.println(pagoOk ? "Factura pagada correctamente."
+                                    : "No se pudo pagar la factura (verifique el ID o el estado).");
                         }
                     }
                     break;
@@ -185,15 +217,20 @@ public class MainConsultorio {
                         System.out.println("No tiene facturas.");
                         break;
                     }
+                    System.out.println("\n--- FACTURAS ---");
                     for (Facturacion f : facturas) {
                         System.out.println("ID Factura: " + f.getId() +
                                 " | Consulta: " + f.getConsulta().getId() +
                                 " | Monto: " + f.getMonto() +
                                 " | Pagado: " + f.isPagado());
                     }
-                    System.out.print("Ingrese ID de la factura a pagar (0 para volver): ");
-                    int idF = Integer.parseInt(sc.nextLine());
+                    int idF = leerEntero(sc,
+                            "Ingrese ID de la factura a pagar (0 para volver): ");
                     if (idF == 0) break;
+
+                    System.out.print("Ingrese número de tarjeta (solo simulación): ");
+                    String tarjeta2 = sc.nextLine();
+
                     boolean pago = servicio.pagarFactura(idF);
                     System.out.println(pago ? "Factura pagada." : "No se pudo pagar la factura.");
                     break;
@@ -228,6 +265,7 @@ public class MainConsultorio {
                     if (turnosMed.isEmpty()) {
                         System.out.println("No tiene turnos.");
                     } else {
+                        System.out.println("\n--- MI AGENDA ---");
                         for (Turno t : turnosMed) {
                             System.out.println(t);
                         }
@@ -235,8 +273,7 @@ public class MainConsultorio {
                     break;
 
                 case "2":
-                    System.out.print("ID del turno: ");
-                    int idT = Integer.parseInt(sc.nextLine());
+                    int idT = leerEntero(sc, "ID del turno: ");
                     Turno t = servicio.consultarTurno(idT);
                     if (t == null) {
                         System.out.println("No existe ese turno.");
@@ -246,8 +283,7 @@ public class MainConsultorio {
                     break;
 
                 case "3":
-                    System.out.print("ID del turno a cancelar: ");
-                    int idTc = Integer.parseInt(sc.nextLine());
+                    int idTc = leerEntero(sc, "ID del turno a cancelar: ");
                     boolean ok = servicio.medicoCancelaTurno(medico, idTc);
                     System.out.println(ok ? "Turno cancelado." : "No se pudo cancelar.");
                     break;
@@ -278,28 +314,31 @@ public class MainConsultorio {
 
             switch (op) {
                 case "1":
-                    System.out.print("ID Paciente: ");
-                    int idPac = Integer.parseInt(sc.nextLine());
-                    System.out.print("ID Médico: ");
-                    int idMed = Integer.parseInt(sc.nextLine());
+                    int idPac = leerEntero(sc, "ID Paciente: ");
+                    int idMed = leerEntero(sc, "ID Médico: ");
                     LocalDateTime fecha = LocalDateTime.now().plusDays(1);
                     servicio.agendarTurnoRecepcionista(idPac, idMed, fecha);
                     System.out.println("Turno agendado para " + fecha);
                     break;
 
                 case "2":
-                    System.out.print("ID de turno a confirmar: ");
-                    int idT = Integer.parseInt(sc.nextLine());
+                    int idT = leerEntero(sc, "ID de turno a confirmar: ");
                     boolean ok = servicio.confirmarTurno(idT);
                     System.out.println(ok ? "Turno confirmado." : "No se pudo confirmar.");
                     break;
 
                 case "3":
                     Map<Medico, List<Turno>> agenda = servicio.obtenerAgendaCompleta();
+                    System.out.println("\n--- AGENDAS DE MÉDICOS ---");
                     for (Medico m : agenda.keySet()) {
                         System.out.println("Médico: " + m.getNombre() + " " + m.getApellido());
-                        for (Turno tr : agenda.get(m)) {
-                            System.out.println("  - " + tr);
+                        List<Turno> listaTurnos = agenda.get(m);
+                        if (listaTurnos.isEmpty()) {
+                            System.out.println("  (Sin turnos)");
+                        } else {
+                            for (Turno tr : listaTurnos) {
+                                System.out.println("  - " + tr);
+                            }
                         }
                     }
                     break;
@@ -331,16 +370,12 @@ public class MainConsultorio {
 
             switch (op) {
                 case "1":
-                    System.out.print("Nombre: ");
-                    String nom = sc.nextLine();
-                    System.out.print("Apellido: ");
-                    String ape = sc.nextLine();
-                    System.out.print("DNI: ");
-                    int dni = Integer.parseInt(sc.nextLine());
-                    System.out.print("Teléfono: ");
-                    int tel = Integer.parseInt(sc.nextLine());
-                    System.out.print("Email: ");
-                    String email = sc.nextLine();
+                    System.out.println("\n=== Crear médico ===");
+                    String nom = leerSoloLetras(sc, "Nombre: ");
+                    String ape = leerSoloLetras(sc, "Apellido: ");
+                    int dni = leerEntero(sc, "DNI (solo números): ");
+                    int tel = leerEntero(sc, "Teléfono (solo números): ");
+                    String email = leerEmailValido(sc, "Email: ");
                     System.out.print("Contraseña: ");
                     String pass = sc.nextLine();
                     System.out.print("Especialidad: ");
@@ -352,34 +387,27 @@ public class MainConsultorio {
                     break;
 
                 case "2":
-                    System.out.print("ID de médico a eliminar: ");
-                    int idM = Integer.parseInt(sc.nextLine());
+                    int idM = leerEntero(sc, "ID de médico a eliminar: ");
                     boolean ok = servicio.eliminarMedico(idM);
                     System.out.println(ok ? "Médico eliminado (baja lógica)." : "No se pudo eliminar.");
                     break;
 
                 case "3":
-                    System.out.print("Nombre: ");
-                    String nr = sc.nextLine();
-                    System.out.print("Apellido: ");
-                    String ar = sc.nextLine();
-                    System.out.print("DNI: ");
-                    int dnr = Integer.parseInt(sc.nextLine());
-                    System.out.print("Teléfono: ");
-                    int telr = Integer.parseInt(sc.nextLine());
-                    System.out.print("Email: ");
-                    String er = sc.nextLine();
+                    System.out.println("\n=== Crear recepcionista ===");
+                    String nr = leerSoloLetras(sc, "Nombre: ");
+                    String ar = leerSoloLetras(sc, "Apellido: ");
+                    int dnr = leerEntero(sc, "DNI (solo números): ");
+                    int telr = leerEntero(sc, "Teléfono (solo números): ");
+                    String er = leerEmailValido(sc, "Email: ");
                     System.out.print("Contraseña: ");
                     String cr = sc.nextLine();
-                    System.out.print("Legajo: ");
-                    int leg = Integer.parseInt(sc.nextLine());
+                    int leg = leerEntero(sc, "Legajo (solo números): ");
                     Recepcionista r = servicio.crearRecepcionista(nr, ar, dnr, telr, er, cr, leg);
                     System.out.println("Recepcionista creado con ID " + r.getId());
                     break;
 
                 case "4":
-                    System.out.print("ID de recepcionista a eliminar: ");
-                    int idR = Integer.parseInt(sc.nextLine());
+                    int idR = leerEntero(sc, "ID de recepcionista a eliminar: ");
                     boolean okr = servicio.eliminarRecepcionista(idR);
                     System.out.println(okr ? "Recepcionista eliminado (baja lógica)." : "No se pudo eliminar.");
                     break;
@@ -391,6 +419,55 @@ public class MainConsultorio {
                 default:
                     System.out.println("Opción inválida.");
             }
+        }
+    }
+
+    // ----------------------------------------------------------
+    // MÉTODOS DE VALIDACIÓN / INPUT SEGURO
+    // ----------------------------------------------------------
+
+    /**
+     * Lee un entero por consola. Si el usuario escribe algo que no es numérico,
+     * vuelve a pedirlo.
+     */
+    private static int leerEntero(Scanner sc, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String linea = sc.nextLine().trim();
+            try {
+                return Integer.parseInt(linea);
+            } catch (NumberFormatException e) {
+                System.out.println("Error: debe ingresar solo números. Intente nuevamente.");
+            }
+        }
+    }
+
+    /**
+     * Lee una cadena que contenga solo letras (y espacios).
+     */
+    private static String leerSoloLetras(Scanner sc, String mensaje) {
+        Pattern patron = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$");
+        while (true) {
+            System.out.print(mensaje);
+            String linea = sc.nextLine().trim();
+            if (patron.matcher(linea).matches()) {
+                return linea;
+            }
+            System.out.println("Error: solo se permiten letras. Intente nuevamente.");
+        }
+    }
+
+    /**
+     * Lee un email que contenga al menos un '@'.
+     */
+    private static String leerEmailValido(Scanner sc, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String email = sc.nextLine().trim();
+            if (email.contains("@")) {
+                return email;
+            }
+            System.out.println("Error: el email debe contener '@'. Intente nuevamente.");
         }
     }
 }
