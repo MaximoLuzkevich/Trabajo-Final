@@ -64,7 +64,7 @@ public class GestorAdministrador implements Gestor<Administrador> {
     // ----------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Administrador a = buscarPorId(id); // lanza excepción si no existe
+        Administrador a = buscarPorId(id);
         a.setActivo(false);
         guardarEnArchivo();
     }

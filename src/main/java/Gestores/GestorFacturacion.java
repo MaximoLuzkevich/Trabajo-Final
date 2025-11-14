@@ -69,7 +69,7 @@ public class GestorFacturacion implements Gestor<Facturacion> {
     // ------------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Facturacion f = buscarPorId(id); // lanza excepción si no existe
+        Facturacion f = buscarPorId(id);
         f.setActivo(false);
         guardarEnArchivo();
     }
@@ -124,7 +124,6 @@ public class GestorFacturacion implements Gestor<Facturacion> {
 
             int idConsulta = obj.getInt("idConsulta");
 
-            // Validación importante para detectar datos corruptos
             Consulta consulta;
             try {
                 consulta = gestorConsulta.buscarPorId(idConsulta);

@@ -64,7 +64,7 @@ public class GestorRecepcionista implements Gestor<Recepcionista> {
     // ----------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Recepcionista r = buscarPorId(id); // lanza excepción si no existe
+        Recepcionista r = buscarPorId(id);
         r.setActivo(false);
         guardarEnArchivo();
     }

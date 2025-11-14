@@ -64,7 +64,7 @@ public class GestorPaciente implements Gestor<Paciente> {
     // ------------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Paciente p = buscarPorId(id); // lanza excepción si no existe
+        Paciente p = buscarPorId(id);
         p.setActivo(false);
         guardarEnArchivo();
     }

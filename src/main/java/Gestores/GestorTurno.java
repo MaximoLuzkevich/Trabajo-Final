@@ -89,7 +89,7 @@ public class GestorTurno implements Gestor<Turno> {
     // ----------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Turno t = buscarPorId(id); // lanza excepción si no existe
+        Turno t = buscarPorId(id);
         t.setActivo(false);
         guardarEnArchivo();
     }

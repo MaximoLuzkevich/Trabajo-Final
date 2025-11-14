@@ -68,7 +68,7 @@ public class GestorConsulta implements Gestor<Consulta> {
     // ------------------------------------------------------------
     @Override
     public void eliminar(int id) {
-        Consulta c = buscarPorId(id); // lanza excepción si no existe
+        Consulta c = buscarPorId(id);
         c.setActivo(false);
         guardarEnArchivo();
     }
